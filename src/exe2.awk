@@ -37,6 +37,8 @@ $1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/   {
                                                  }   
                                                  for(i=2;i<=NF;i++){
                                                     split($i,array,/\|/);
+                                                    sub(/^(\s*)/,"",$1);
+                                                    sub(/(\s*)$/,"",$1);
                                                     for(el in array){
                                                             sub(/^(\s*)/,"",array[el]);
                                                             sub(/(\s*)$/,"",array[el]);
