@@ -28,7 +28,7 @@ BEGIN                                           {IGNORECASE=1; FS=":"}
                                                     sub(/(\s*)$/,"",$3);
                                                     inv[$2]=$3;
                                                 }
-$1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/   {
+$1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/ && $0 != "" {
                                                  if(aux[2]["THE"]!=""){
                                                      sub(/^(\s*)/,"",$1);
                                                      sub(/(\s*)$/,"",$1);
@@ -42,11 +42,13 @@ $1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/   {
                                                     for(el in array){
                                                             sub(/^(\s*)/,"",array[el]);
                                                             sub(/(\s*)$/,"",array[el]);
-                                                            print "(" $1 ", " aux[1][i] ", " array[el] ")";
-                                                            if(aux[2][aux[1][i]]!=""){
-                                                                print "(" array[el] ", iof," aux[2][aux[1][i]] ")";
-                                                                print "(" aux[2][aux[1][i]] ", inst," array[el] ")";
-                                                            }
+                                                            if(array[el]!=""){
+                                                                print "(" $1 ", " aux[1][i] ", " array[el] ")";
+                                                                if(aux[2][aux[1][i]]!=""){
+                                                                    print "(" array[el] ", iof," aux[2][aux[1][i]] ")";
+                                                                    print "(" aux[2][aux[1][i]] ", inst," array[el] ")";
+                                                                }
+                                                            }   
                                                         }
                                                     }
                                                 }
