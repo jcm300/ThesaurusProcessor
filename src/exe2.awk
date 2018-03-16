@@ -1,25 +1,17 @@
 BEGIN                                           {IGNORECASE=1; FS=":"}
 /^%THE/                                         {
-                                                 n=split($1,cAux,/</);
-                                                 if(n==2){
-                                                     sub(/^(\s*)/,"",cAux[2]);
-                                                     sub(/(\s*)$/,"",cAux[2]);
-                                                     aux[2]["THE"]=cAux[2];
-                                                 }else
-                                                    aux[2]["THE"]="";
-                                                 
-                                                 for(j=2;j<=NF;j++){
-                                                    n=split($j,cAux,/</);
-                                                    sub(/^(\s*)/,"",cAux[1]);
-                                                    sub(/(\s*)$/,"",cAux[1]);
-                                                    aux[1][j]=cAux[1];
-                                                    if(n==2){
-                                                        sub(/^(\s*)/,"",cAux[2]);
-                                                        sub(/(\s*)$/,"",cAux[2]);
-                                                        aux[2][cAux[1]]=cAux[2];
-                                                    }else
-                                                        aux[2][cAux[1]]="";
-                                                }
+                                                    for(j=1;j<=NF;j++){
+                                                        n=split($j,cAux,/</);
+                                                        sub(/^(\s*)/,"",cAux[1]);
+                                                        sub(/(\s*)$/,"",cAux[1]);
+                                                        if(cAux[1] !~ /%THE/)relation[j]=cAux[1];
+                                                        if(n==2){
+                                                            sub(/^(\s*)/,"",cAux[2]);
+                                                            sub(/(\s*)$/,"",cAux[2]);
+                                                            class[j]=cAux[2];
+                                                        }else
+                                                            class[j]="";
+                                                    }
                                                 }
 /^%inv/                                         {
                                                     sub(/^(\s*)/,"",$2);
@@ -29,26 +21,27 @@ BEGIN                                           {IGNORECASE=1; FS=":"}
                                                     inv[$2]=$3;
                                                 }
 $1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/ && $0 != "" {
-                                                 if(aux[2]["THE"]!=""){
-                                                     sub(/^(\s*)/,"",$1);
-                                                     sub(/(\s*)$/,"",$1);
-                                                     print "(" $1 ", iof," aux[2]["THE"] ")";
-                                                     print "(" aux[2]["THE"] ", inst," $1 ")";
-                                                 }   
-                                                 for(i=2;i<=NF;i++){
+                                                sub(/^(\s*)/,"",$1);
+                                                sub(/(\s*)$/,"",$1);
+                                                if(class[1]!=""){
+                                                    print "(" $1 ", iof," class[1] ")";
+                                                    print "(" class[1] ", inst," $1 ")";
+                                                }   
+                                                for(i=2;i<=NF;i++){
                                                     split($i,array,/\|/);
-                                                    sub(/^(\s*)/,"",$1);
-                                                    sub(/(\s*)$/,"",$1);
                                                     for(el in array){
-                                                            sub(/^(\s*)/,"",array[el]);
-                                                            sub(/(\s*)$/,"",array[el]);
-                                                            if(array[el]!=""){
-                                                                print "(" $1 ", " aux[1][i] ", " array[el] ")";
-                                                                if(aux[2][aux[1][i]]!=""){
-                                                                    print "(" array[el] ", iof," aux[2][aux[1][i]] ")";
-                                                                    print "(" aux[2][aux[1][i]] ", inst," array[el] ")";
-                                                                }
-                                                            }   
-                                                        }
+                                                        sub(/^(\s*)/,"",array[el]);
+                                                        sub(/(\s*)$/,"",array[el]);
+                                                        if(array[el]!=""){
+                                                            print "(" $1 ", " relation[i] ", " array[el] ")";
+                                                            if(inv[relation[i]]!=""){
+                                                                print "(" array[el] ", " inv[relation[i]] ", " $1 ")";
+                                                            }
+                                                            if(class[relation[i]]!=""){
+                                                                   print "(" array[el] ", iof," class[relation[i]] ")";
+                                                                   print "(" class[relation[i]] ", inst," array[el] ")";
+                                                            }
+                                                        }   
                                                     }
+                                                }
                                                 }
