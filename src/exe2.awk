@@ -24,8 +24,8 @@ $1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/ && $0 != "" {
                                                 sub(/^(\s*)/,"",$1);
                                                 sub(/(\s*)$/,"",$1);
                                                 if(class[1]!=""){
-                                                    print "(" $1 ", iof," class[1] ")";
-                                                    print "(" class[1] ", inst," $1 ")";
+                                                    print "(" $1 ", iof, " class[1] ")";
+                                                    print "(" class[1] ", inst, " $1 ")";
                                                 }   
                                                 for(i=2;i<=NF;i++){
                                                     split($i,array,/\|/);
@@ -37,9 +37,9 @@ $1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/ && $0 != "" {
                                                             if(inv[relation[i]]!=""){
                                                                 print "(" array[el] ", " inv[relation[i]] ", " $1 ")";
                                                             }
-                                                            if(class[relation[i]]!=""){
-                                                                   print "(" array[el] ", iof," class[relation[i]] ")";
-                                                                   print "(" class[relation[i]] ", inst," array[el] ")";
+                                                            if(class[i]!=""){
+                                                                   print "(" array[el] ", iof, " class[i] ")";
+                                                                   print "(" class[i] ", inst, " array[el] ")";
                                                             }
                                                         }   
                                                     }
