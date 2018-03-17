@@ -24,8 +24,8 @@ $1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/ && $0 != "" {
                                                 sub(/^(\s*)/,"",$1);
                                                 sub(/(\s*)$/,"",$1);
                                                 if(class[1]!=""){
-                                                    print "(" $1 ", iof, " class[1] ")";
-                                                    print "(" class[1] ", inst, " $1 ")";
+                                                    !triples["(" $1 ",iof " class[1] ")"]++;
+                                                    !triples["(" class[1] ",inst " $1")"]++;
                                                 }   
                                                 for(i=2;i<=NF;i++){
                                                     split($i,array,/\|/);
@@ -33,15 +33,19 @@ $1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/ && $0 != "" {
                                                         sub(/^(\s*)/,"",array[el]);
                                                         sub(/(\s*)$/,"",array[el]);
                                                         if(array[el]!=""){
-                                                            print "(" $1 ", " relation[i] ", " array[el] ")";
+                                                            !triples["(" $1 ", " relation[i] ", " array[el] ")"]++;
                                                             if(inv[relation[i]]!=""){
-                                                                print "(" array[el] ", " inv[relation[i]] ", " $1 ")";
+                                                                !triples["(" array[el] ", " inv[relation[i]] ", " $1 ")"]++;
                                                             }
                                                             if(class[i]!=""){
-                                                                   print "(" array[el] ", iof, " class[i] ")";
-                                                                   print "(" class[i] ", inst, " array[el] ")";
+                                                                   !triples["(" array[el] ", iof, " class[i] ")"]++;
+                                                                   !triples["(" class[i] ", inst, " array[el] ")"]++;
                                                             }
                                                         }   
                                                     }
                                                 }
+                                                }
+END                                             {
+                                                    for(triple in triples)
+                                                        print triple >> "triples.txt"
                                                 }
