@@ -54,14 +54,14 @@ Pode-se finalmente, passar ao desenvolvimento do processador Thesaurus.
 O processamento iniciou-se pela identificação dos domínios e relações presentes no dicionário. Para tal, e tendo em conta a estrutura dos documentos, foi usado como \texttt{Field Separator} o carácter ':'.
 Tendo a conta a sintaxe de Padrão $\to$ Ação inerente ao \texttt{AWK} foram considerados relevantes os seguintes padrões:
 \begin{enumerate}
-        \item /\^\%dom/: padrão que identifica novo domínio no início de uma linha
-        \item /\^\%THE/: padrão que identifica início de tabela de relações indicadas na presente linha
+        \item /\^ \%dom/: padrão que identifica novo domínio no início de uma linha
+        \item /\^ \%THE/: padrão que identifica início de tabela de relações indicadas na presente linha
 \end{enumerate}
 No caso do padrão /\^\%dom/ a ação compreende a remoção de espaços que precedam o domínio e o armazenamento do mesmo numa matriz \texttt{ind}.
 \begin{Verbatim}
     /^%dom/     {sub(/^ /,"",$2); ind[0][$2]++}
 \end{Verbatim}
-Quando é encontrado o padrão /\^\%THE/ são percorridos todos os campos (\textbf{i.e.}relações) e quando um dada relação não vazia (\texttt{$j != " " && $j!=""}) é encontrada são-lhe removidos os espaços precedentes e subsequentes removendo também, eventualmente, a indicação de classe. De seguinta estaes são também armazenados na matriz \texttt{ind}.
+Quando é encontrado o padrão /\^\%THE/ são percorridos todos os campos (\textbf{i.e.}relações) e quando um dada relação não vazia (\texttt{\$j!='' ''\&\& \$j!=''''}) é encontrada são-lhe removidos os espaços precedentes e subsequentes removendo também, eventualmente, a indicação de classe. De seguinta estaes são também armazenados na matriz \texttt{ind}.
 \begin{Verbatim}
 /^%THE/     {for(j=2;j<=NF;j++){
                 if($j != " " && $j!=""){
