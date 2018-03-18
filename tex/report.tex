@@ -1,11 +1,8 @@
 \documentclass{llncs}
-\usepackage[utf8]{inputenc}
-\usepackage{fancyvrb}
-\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}\usepackage{fancyvrb} \usepackage[portuguese]{babel}
 \usepackage{ragged2e}
 
-\begin{document}
-\mainmatter
+\begin{document} \mainmatter
 \title{Processador de Thesaurus}
 \titlerunning{Processador de Thesaurus}
 \author{José Carlos Lima Martins A78821 \and
@@ -26,6 +23,7 @@ Este documento serve de apoio ao desenvolvimento de um Processador Thesaurus exp
 \end{abstract}
 
 \section{Introdução}
+<<<<<<< Updated upstream
 O presente projeto (Processador de Thesaurus) visa ser um sistema de processamento de dicionários Thesaurus que recorre a expressões regulares (ERs) para filtrar e transformar os mesmos, extraindo e tratando a informação mais relevante de forma eficiente. Para atingir este objetivo é usada a linguagem de filtragem e tratamento de dados \texttt{AWK} visto ser uma \textbf{DSL}(Domain Specific Language) com foco em dados semi-estruturados.
 
 \section{Preliminares}
@@ -52,6 +50,33 @@ A estrutura de um dicionário pode ser dividido em três conceitos:
 Pode-se finalmente, passar ao desenvolvimento do processador Thesaurus.
 
 \section{Desenvolvimento}
+\subsection{Exe 1}
+O processamento iniciou-se pela identificação dos domínios e relações presentes no dicionário. Para tal, e tendo em conta a estrutura dos documentos, foi usado como \texttt{Field Separator} o carácter ':'.
+Tendo a conta a sintaxe de Padrão $\to$ Ação inerente ao \texttt{AWK} foram considerados relevantes os seguintes padrões:
+\begin{enumerate}
+        \item /\^ \%dom/: padrão que identifica novo domínio no início de uma linha
+        \item /\^ \%THE/: padrão que identifica início de tabela de relações indicadas na presente linha
+\end{enumerate}
+No caso do padrão /\^\%dom/ a ação compreende a remoção de espaços que precedam o domínio e o armazenamento do mesmo numa matriz \texttt{ind}.
+\begin{Verbatim}
+    /^%dom/     {sub(/^ /,"",$2); ind[0][$2]++}
+\end{Verbatim}
+Quando é encontrado o padrão /\^\%THE/ são percorridos todos os campos (\textbf{i.e.}relações) e quando um dada relação não vazia (\texttt{\$j!='' ''\&\& \$j!=''''}) é encontrada são-lhe removidos os espaços precedentes e subsequentes removendo também, eventualmente, a indicação de classe. De seguinta estaes são também armazenados na matriz \texttt{ind}.
+\begin{Verbatim}
+/^%THE/     {for(j=2;j<=NF;j++){
+                if($j != " " && $j!=""){
+                    sub(/^ /,"",$j);           
+                    sub(/(\s)|(<(.*)?)/,"",$j);
+                    !ind[1][$j]++;
+                }                              
+             }
+            }
+
+\end{Verbatim}
+
+Por fim, quando o final de ficheiro é encontrado (\texttt{EOF}) são impressos os domínios e as relações recorrendo, para isso, às funções \texttt{printDominios} e \texttt{printRelations} respetivamente.
+
+\subsubsection{Usage}
 
 \section{Exe 2}
 O objetivo deste exercício é mostrar os triplos expandidos(um por cada linha) correspondentes. Como tal, há a necessidade de percorrer os ficheiros por completo 

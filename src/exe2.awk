@@ -20,10 +20,17 @@ BEGIN                                           {IGNORECASE=1; FS=":"}
                                                     sub(/(\s*)$/,"",$3);
                                                     inv[$2]=$3;
                                                 }
+/^%dom/                                         {
+                                                    sub(/^(\s*)/,"",$2);
+                                                    sub(/(\s*)$/,"",$2);
+                                                    curDomain=$2;
+                                                }
 $1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/ && $0 != "" {
                                                 sub(/^(\s*)/,"",$1);
                                                 sub(/(\s*)$/,"",$1);
                                                 if(class[1]!=""){
+                                                    !triples["(" curDomain ", dom, " array[el] ")"]++;
+                                                    !triples["(" array[el] ", voc, " curDomain ")"]++;
                                                     !triples["(" $1 ", iof, " class[1] ")"]++;
                                                     !triples["(" class[1] ", inst, " $1 ")"]++;
                                                 }   
@@ -33,6 +40,8 @@ $1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/ && $0 != "" {
                                                         sub(/^(\s*)/,"",array[el]);
                                                         sub(/(\s*)$/,"",array[el]);
                                                         if(array[el]!=""){
+                                                            !triples["(" curDomain ", dom, " array[el] ")"]++;
+                                                            !triples["(" array[el] ", voc, " curDomain ")"]++;
                                                             !triples["(" $1 ", " relation[i] ", " array[el] ")"]++;
                                                             if(inv[relation[i]]!=""){
                                                                 !triples["(" array[el] ", " inv[relation[i]] ", " $1 ")"]++;
