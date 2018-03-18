@@ -14,15 +14,13 @@ BEGIN           {IGNORECASE=1}
 END {
     for(x in triples){
         split(triples[x],aux,",");
-        if(aux[2]!=""){
-            if(create[aux[1]]==""){
-                print "<meta charset=\"utf-8\">" >> aux[1] ".html";
-                print "<ul>" >> aux[1] ".html";
-                !create[aux[1]]++;
-            }
-            if(ind[aux[2]]!="") print "<li><a href=\"" aux[2] ".html\">" aux[2] "</a></li>" >> aux[1] ".html"
-            else print "<li>" aux[2] "</li>" >> aux[1] ".html"
+        if(create[aux[1]]==""){
+            print "<meta charset=\"utf-8\">" >> aux[1] ".html";
+            print "<ul>" >> aux[1] ".html";
+            !create[aux[1]]++;
         }
+        if(ind[aux[2]]!="") print "<li><a href=\"" aux[2] ".html\">" aux[2] "</a></li>" >> aux[1] ".html"
+        else print "<li>" aux[2] "</li>" >> aux[1] ".html"
     }
         
     for(y in create){

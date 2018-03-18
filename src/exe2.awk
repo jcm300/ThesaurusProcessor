@@ -24,8 +24,8 @@ $1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/ && $0 != "" {
                                                 sub(/^(\s*)/,"",$1);
                                                 sub(/(\s*)$/,"",$1);
                                                 if(class[1]!=""){
-                                                    !triples["(" $1 ",iof " class[1] ")"]++;
-                                                    !triples["(" class[1] ",inst " $1")"]++;
+                                                    !triples["(" $1 ", iof, " class[1] ")"]++;
+                                                    !triples["(" class[1] ", inst, " $1")"]++;
                                                 }   
                                                 for(i=2;i<=NF;i++){
                                                     split($i,array,/\|/);
