@@ -26,8 +26,30 @@ Este documento serve de apoio ao desenvolvimento de um Processador Thesaurus exp
 \end{abstract}
 
 \section{Introdução}
-O presente projeto (Processador de Thesaurus) visa ser um sistema de processamento de dicionários Thesaurus que recorre a expressões regulares (ERs) para filtrar e transformar os mesmos, extraindo e tratando a informação mais relevante de forma eficiente. Para atingir este objetivo é usada a linguagem de filtragem e tratamento de dados \texttt{GAWK} visto ser uma \textbf{DSL}(Domain Specific Language) com foco em dados semi-estruturados.
+O presente projeto (Processador de Thesaurus) visa ser um sistema de processamento de dicionários Thesaurus que recorre a expressões regulares (ERs) para filtrar e transformar os mesmos, extraindo e tratando a informação mais relevante de forma eficiente. Para atingir este objetivo é usada a linguagem de filtragem e tratamento de dados \texttt{AWK} visto ser uma \textbf{DSL}(Domain Specific Language) com foco em dados semi-estruturados.
 
+\section{Preliminares}
+De modo a compreender melhor o desenvolvimento deste projeto é importante saber e compreender a estrutura dos dicionários (ficheiros .mdic). 
+A estrutura de um dicionário pode ser dividido em três conceitos:
+\begin{itemize}
+    \item linhas começadas por '\#': comentários a ignorar
+    \item diretivas gerais:
+        \begin{itemize}
+            \item linhas começadas por '\%dom: dominio': indica que até ao aparecimento de nova linha começada por '\%dom:' todos os termos são de 'dominio', sendo dom uma relação e a sua inversa é voc
+            \item linhas começadas por '\%inv: relação1 : relação2': indica que a relação1 tem como inversa a relação2
+        \end{itemize}
+    \item linhas começadas por '\%THE': indicam tabelas de relações, com as seguintes caracteristicas:
+        \begin{itemize}
+            \item a linha inicial possui as relações bem como as classes da coluna correspondente
+            \item cada linha tem 1 ou mais termos, menos a inicial que possui apenas relações e classes
+            \item os termos são separados por ':' daqueles com que se relacionam
+            \item a relação entre o termo da coluna 1 e da coluna N é dado pela relação N da linha inicial
+            \item na presença de vários termos com a mesma relação, podem ser agrupados por '$|$'
+            \item quando uma relação na linha inicial possui $<$classe, ou seja 'relação$<$classe', significa que o elementos dessa coluna são instancia da classe
+            \item quando '\%THE$<$classe' significa que o termo 1 é instancia da classe
+        \end{itemize}
+\end{itemize}
+Pode-se finalmente, passar ao desenvolvimento do processador Thesaurus.
 
 \section{Desenvolvimento}
 
