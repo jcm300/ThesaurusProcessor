@@ -1,2 +1,7 @@
 # Thesaurus Dictionaries
 **/*.mdic
+
+# Latex
+**/*.aux
+**/*.log
+**/*.cls
