@@ -78,12 +78,12 @@ Por fim, quando o final de ficheiro é encontrado (\texttt{EOF}) são impressos 
 \subsubsection{Usage}
 
 \section{Exe 2}
-O objetivo deste exercício é mostrar os triplos expandidos(um por cada linha) correspondentes. Como tal, há a necessidade de percorrer os ficheiros por completo. Consideramos como Field Separator ':'. Consoante o início da linha é processado de maneira diferente como indicado de seguida:
+O objetivo deste exercício é mostrar os triplos expandidos(um por cada linha) correspondentes. Como tal, há a necessidade de percorrer os ficheiros por completo. Consideramos como Field Separator ':'. Consoante o início da linha, o processamento é indicado de seguida:
 \begin{itemize}
-    \item linha começa por '\%dom': guarda-se o dominio atual numa variável até aparecer uma nova linha com '\%dom' onde o dominio é atualizado
-    \item linha começa por '\%inv :': guarda num indice inv a relação e a sua respetiva inversa
-    \item linha começa com '\%THE': é percorrida a linha, guardando as relações e se tiverem as repetivas classes, sendo as relações guardadas num indice relation e as classes num indice class
-    \item restantes linhas (\$1 !~/\^\%/ \&\& \$0 !~ /\^\#/ \&\& \$0 != ''''), ou seja, as pertencentes às tabelas '\%THE': é guardado no indice triples os triplos, colocando inicialmente o termo1 relacionado com o dominio(dom) bem como a inversa(voc). Depois verificamos se existe uma classe associada ao '\%THE' e caso exista adicionamos também os triplos correspondentes ao instance of e tem como instancia. Após esta fase, percorremos o resto dos campos(termos da lado direito) separando-os por $|$ usando o textit{split}. De seguida percorremos os elementos já separados relacionando-os com o dominio atual, 
+    \item /\%dom/: guarda-se o dominio indicado numa variável até aparecer uma nova linha com o mesmo padrão altura em que o dominio é atualizado
+    \item /\%inv/:': guarda num índice \texttt{inv} a relação e a sua respetiva inversa
+    \item /\%THE/: as relações são armazenadas num índice \texttt{relation} e as classes (quando aplicável/existentes) num índice \texttt{class}
+    \item \$1 !~/\^\%/ \&\& \$0 !~ /\^\#/ \&\& \$0 != '''' (\textbf{i.e.}tabelas de relações): os triplos são armazenados no índice \texttt{triples}, colocando inicialmente o termo1 relacionado com o dominio(\textbf{dom}) bem como a respetiva inversa(\textbf{voc}). De seguida, caso exista uma classe associada ao '\%THE' esta é adicionada, bem como os triplos correspondentes ao \textbf{instance of} e \textbf{tem como instancia}. O resto dos campos (termos da lado direito) são de seguida percorridos, separando-os por $|$ usando o \texttt{split} e relacionando-os com o domínio atual.
 \end{itemize}
 
 \section{Conclusão}
