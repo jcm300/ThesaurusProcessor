@@ -47,5 +47,5 @@ $1 !~/%inv/ && $1 !~ /%THE/ && $1 !~ /%dom/ && $0 !~ /^#/ && $0 != "" {
                                                 }
 END                                             {
                                                     for(triple in triples)
-                                                        print triple >> "triples.txt"
+                                                        print triple
                                                 }
