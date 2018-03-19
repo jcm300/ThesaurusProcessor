@@ -78,6 +78,10 @@ Quando é encontrado o padrão \verb|/^%THE/| são percorridos todos os campos (
 Por fim, quando o final de ficheiro é encontrado (\texttt{EOF}) são impressos os domínios e as relações recorrendo, para isso, às funções \texttt{printDominios} e \texttt{printRelations} respetivamente.
 
 \subsubsection{Usage}
+Dado a simplicidade do processador desenvolvido, um exemplo de uso consiste em identificar os domínios e relações presentes num dado dicionáiro *.mdic:
+\begin{Verbatim}
+    gawk -f exe1.awk *.mdic
+\end{Verbatim}
 
 \section{Exe 2}
 O objetivo deste exercício é mostrar os triplos expandidos(um por cada linha) correspondentes. Como tal, há a necessidade de percorrer os ficheiros por completo. Consideramos como Field Separator ':'. Consoante o início da linha, o processamento é indicado de seguida:
