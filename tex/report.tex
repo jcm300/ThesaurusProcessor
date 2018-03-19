@@ -110,7 +110,9 @@ gawk -f exe2.awk *.mdic >> file.txt
 \end{verbatim}
 
 \subsection{Exe 3}
-Neste ultimo exercicio, aproveitamos o resultado obtido no anterior, ou seja os triplos obtidos anteriormente são usados como input para este. Sendo assim, a todas as linhas retiramos os parenteses, dividindo de seguida pelas virgulas, removendo depois ao termo1 e ao termo2 os espaços excedentes, isto é, que estejam antes ou após o conteúdo. O termo1 e o termo2 são de seguida, guardado num indice triples separados apenas por uma virgula (\verb|triples[i]=triple[1] "," triple[3];|). É também alterado o valor num indice ind de modo a sabermos no final se será criado ou nao o ficheiro correspondente a cada termo de modo a sabermos futuramente se pode haver uma hiperligação para o mesmo. No fim de percorridos todo o input(END), percorremos todo o indice triples,em que para cada elemento tem-se em atenção que se for a primeira vez a ser criado o ficheiro adicionamos o encoding e a macro de lista, isto é:
+O último exercício compreende a criação de ficheiros \texttt{HTML} com hiperligações entre si com base nos termos e nas suas relações \textbf{i.e.} nos triplos construídos no exemplo anterior. Para obter este resultado basta recorrer ao código desenvolvido no exercício anterior e, quando o fim do ficheiro for encontrado, criar as hiperligações referidas. 
+Como tal, neste exercício é usado como \textit{input} o \textit{output} do exercício anterior e, para cada triplo, são removidos os parêntesis, dividindo de seguida os termos pelas vírgulas, e removendo a cada termo os espaços precedentes e subsequentes. Os termos são guardados num índice \textit{tiples}, eparados por uma virgula (\verb|triples[i]=triple[1] "," triple[3];|). Cada \textbf{termo1} é armanzenado num índice \texttt{ind} de modo a registar todos os ficheiros \texttt{HTML} (e correspondentes hiperligações) que serão criados. No fim do ficheiro(\textbf{END}), é percorrida a lista de triples e, para cada novo elemento é criado o ficheiro \texttt{HTML} correspondente com a tag de \textit{enconding} e de \textit{macro de lista}:
+
 \begin{verbatim}
 if(create[aux[1]]==""){
     print "<meta charset=\"utf-8\">" >> aux[1] ".html";
@@ -118,14 +120,16 @@ if(create[aux[1]]==""){
     !create[aux[1]]++;
 }
 \end{verbatim}
-Para além disso, antes de adicionar ao mesmo o hyperlink verifica-se se o podemos fazer verificando o indice ind. Em caso negativo é colocado apenas colocado o nome do termo2, como se pode verificar em:
+
+A criação de hiperligações é precedida de uma verificação em relação à existência do ficheiro a que esta se refere e, caso este não exista, é apenas criado um item com o nome do \textbf{termo2} correspondente.
+
 \begin{verbatim}
 if(ind[aux[2]]!="") 
     print "<li><a href=\"" aux[2] ".html\">" aux[2] "</a></li>" >> aux[1] ".html"
 else print "<li>" aux[2] "</li>" >> aux[1] ".html"
 \end{verbatim}
-Após percorrido o indice triples, é altura de adicionar a macro de fecho de lista (</ul>)
-a todos os ficheiros e, como pelo indice create sabe-se todos os ficheiros criados basta percorrê-lo adicionando a macro em falta, como demonstrado de seguida:
+
+Após todas as hiperligações terem sido criadas é adicionada a macro de fecho de lista (\textbf{</ul>})a todos os ficheiros criados (recorrendo para isso ao índice \texttt{create}:
 \begin{verbatim}
 for(y in create){
     print "</ul>" >> y ".html";
@@ -133,7 +137,7 @@ for(y in create){
 \end{verbatim}
 
 \subsubsection{Usage}
-Como anteriormente referido foi usado o output do exercicio anterior e como tal de modo a obter os resultados esperados o programa deve ser executado preferencialmente usando uma das seguintes maneiras:
+Como anteriormente referido foi usado o \textit{output} do exercicio anterior e, de modo a obter os resultados esperados, o programa deve ser executado, preferencialmente, de uma das seguintes maneiras:
 \begin{itemize}
     \item \begin{verbatim}
     gawk -f exe2.awk *.mdic | gawk -f exe3.awk
