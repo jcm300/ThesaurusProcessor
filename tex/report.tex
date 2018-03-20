@@ -44,16 +44,16 @@ A estrutura de um dicionário pode ser dividido em três conceitos:
             \item os termos são separados por ':' daqueles com que se relacionam
             \item a relação entre o termo da coluna 1 e da coluna N é dado pela relação N da linha inicial
             \item na presença de vários termos com a mesma relação, podem ser agrupados por '$|$'
-            \item quando uma relação na linha inicial possui $<$classe, ou seja 'relação$<$classe', significa que o elementos dessa coluna são instancia da classe
-            \item quando '\%THE$<$classe' significa que o termo 1 é instancia da classe
+            \item quando uma relação na linha inicial possui $<$classe, ou seja 'relação$<$classe', significa que o elementos dessa coluna são instâncias da 'classe'
+            \item quando '\%THE$<$classe' significa que o termo 1 é instância da 'classe'
         \end{itemize}
 \end{itemize}
 Pode-se finalmente, passar ao desenvolvimento do processador Thesaurus.
 
 \section{Desenvolvimento}
 \subsection{Exe 1}
-O processamento iniciou-se pela identificação dos domínios e relações presentes no dicionário. Para tal, e tendo em conta a estrutura dos documentos, foi usado como \texttt{Field Separator} o carácter ':'.
-Tendo a conta a sintaxe de Padrão $\to$ Ação inerente ao \texttt{AWK} foram considerados relevantes os seguintes padrões:
+O processamento iniciou-se pela identificação dos domínios e relações presentes no dicionário. Para tal, e tendo em conta a estrutura dos documentos, foi usado como \texttt{Field Separator} o caracter ':'.
+Tendo em conta a sintaxe de Padrão $\to$ Ação inerente ao \texttt{AWK} foram considerados relevantes os seguintes padrões:
 \begin{enumerate}
     \item \verb|/^%dom/|: padrão que identifica novo domínio no início de uma linha
     \item \verb|/^%THE/|: padrão que identifica início de tabela de relações indicadas na presente linha
@@ -62,7 +62,7 @@ No caso do padrão \verb|/^%dom/| a ação compreende a remoção de espaços qu
 \begin{Verbatim}
     /^%dom/     {sub(/^ /,"",$2); ind[0][$2]++}
 \end{Verbatim}
-Quando é encontrado o padrão \verb|/^%THE/| são percorridos todos os campos (\textbf{i.e.}relações) e quando um dada relação não vazia (\verb|$j!=" " && $j!=""|) é encontrada são-lhe removidos os espaços precedentes e subsequentes removendo também, eventualmente, a indicação de classe. De seguinta estaes são também armazenados na matriz \texttt{ind}.
+Quando é encontrado o padrão \verb|/^%THE/| são percorridos todos os campos (\textbf{i.e.}relações) e quando uma dada relação não vazia (\verb|$j!=" " && $j!=""|) é encontrada são-lhe removidos os espaços precedentes e subsequentes removendo também, eventualmente, a indicação de classe. De seguinta estes são também armazenados na matriz \texttt{ind}.
 \begin{Verbatim}
 /^%THE/     {for(j=2;j<=NF;j++){
                 if($j != " " && $j!=""){
@@ -93,7 +93,7 @@ O objetivo deste exercício é mostrar os triplos expandidos(um por cada linha) 
         \begin{itemize}
             \item termo1 relacionado com o dominio(\textbf{dom}) bem como a respetiva inversa(\textbf{voc})
             \item caso exista uma classe associada ao '\%THE' é adicionado os triplos correspondentes ao \textbf{instance of}(iof) e \textbf{tem como instancia}(inst) envolvendo o termo1 e a classe
-            \item são percorridos o resto dos campos (termos da lado direito), separando-os por $|$ usando o \texttt{split} obtendo as seguintes triplos dependendo do caso:
+            \item são percorridos o resto dos campos (termos da lado direito), separando-os por $|$ usando o \texttt{split} obtendo os seguintes triplos dependendo do caso:
                 \begin{itemize}
                     \item os triplos que relacionam o termo com o dominio (dom e voc)
                     \item o triplo envolvendo o termo1, a relação da coluna correspondente e o termo, sendo que caso a relação possua inversa(verificado no indice inv) é adicionado o triplo
@@ -101,10 +101,10 @@ O objetivo deste exercício é mostrar os triplos expandidos(um por cada linha) 
                 \end{itemize}
         \end{itemize}
 \end{itemize}
-Após a adição de todos os triplos no indice triples, ou seja após percorridos todos os ficheiros(END) é percorrido esse mesmo indice imprimindo cada um. Este indice possui como elemento diferenciador o triplo e como conteudo se ocorreu, de modo a retirar triplos repetidos. É também bom referir que todos os elementos, seja classes, relações ou termos é lhes retirado espaços que estejam a mais antes e após o mesmo.
+Após a adição de todos os triplos no indice triples, ou seja após percorridos todos os ficheiros(END) é percorrido esse mesmo indice imprimindo cada um. Este indice possui como elemento diferenciador o triplo e como conteúdo se ocorreu, de modo a retirar triplos repetidos. É também bom referir que todos os elementos, seja classes, relações ou termos é lhes retirado espaços que estejam a mais antes e após o mesmo.
 
 \subsubsection{Usage}
-O exemplo mais dificil de utilização deste programa é:
+O exemplo mais comum de utilização deste programa é:
 \begin{verbatim}
 gawk -f exe2.awk *.mdic
 \end{verbatim}
@@ -115,7 +115,7 @@ gawk -f exe2.awk *.mdic >> file.txt
 
 \subsection{Exe 3}
 O último exercício compreende a criação de ficheiros \texttt{HTML} com hiperligações entre si com base nos termos e nas suas relações \textbf{i.e.} nos triplos construídos no exemplo anterior. Para obter este resultado basta recorrer ao código desenvolvido no exercício anterior e, quando o fim do ficheiro for encontrado, criar as hiperligações referidas. 
-Como tal, neste exercício é usado como \textit{input} o \textit{output} do exercício anterior e, para cada triplo, são removidos os parêntesis, dividindo de seguida os termos pelas vírgulas, e removendo a cada termo os espaços precedentes e subsequentes. Os termos são guardados num índice \textit{tiples}, eparados por uma virgula (\verb|triples[i]=triple[1] "," triple[3];|). Cada \textbf{termo1} é armanzenado num índice \texttt{ind} de modo a registar todos os ficheiros \texttt{HTML} (e correspondentes hiperligações) que serão criados. No fim do ficheiro(\textbf{END}), é percorrida a lista de triples e, para cada novo elemento é criado o ficheiro \texttt{HTML} correspondente com a tag de \textit{enconding} e de \textit{macro de lista}:
+Como tal, neste exercício é usado como \textit{input} o \textit{output} do exercício anterior e, para cada triplo, são removidos os parêntesis, dividindo de seguida os termos pelas vírgulas, e removendo a cada termo os espaços precedentes e subsequentes. Os termos são guardados num índice \textit{triples}, separados por uma virgula (\verb|triples[i]=triple[1] "," triple[3];|). Cada \textbf{termo1} é armanzenado num índice \texttt{ind} de modo a registar todos os ficheiros \texttt{HTML} (e correspondentes hiperligações) que serão criados. No fim do ficheiro(\textbf{END}), é percorrida a lista de triples e, para cada novo elemento é criado o ficheiro \texttt{HTML} correspondente com a tag de \textit{enconding} e de lista:
 
 \begin{verbatim}
 if(create[aux[1]]==""){
@@ -133,7 +133,7 @@ if(ind[aux[2]]!="")
 else print "<li>" aux[2] "</li>" >> aux[1] ".html"
 \end{verbatim}
 
-Após todas as hiperligações terem sido criadas é adicionada a macro de fecho de lista (\textbf{</ul>})a todos os ficheiros criados (recorrendo para isso ao índice \texttt{create}:
+Após todas as hiperligações terem sido criadas é adicionada a macro de fecho de lista (\textbf{$<$/ul$>$})a todos os ficheiros criados , recorrendo para isso ao índice \texttt{create}:
 \begin{verbatim}
 for(y in create){
     print "</ul>" >> y ".html";
@@ -153,6 +153,6 @@ Como anteriormente referido foi usado o \textit{output} do exercicio anterior e,
 \end{itemize}
 
 \section{Conclusão}
-O uso de uma linguagem \textbf{DSL} de \textit{scripting} como o \texttt{AWK} permite o rápido desenvolvimento de um processador de dados semi-estruturados nomeadamente um dicionário Thesaurus. Este tipo de processador necessitaria de código de complexidade superior e de tamanho considerável caso fosse desenvolvido em linguagens declarativas como C ou Java em que é necessário ter em conta a gestão da memória bem como outras trivialidades que são de pouca relevancia para o processador em si. Em \texttt{AWK}, dada a sua estrutura \textbf{padrão $\to$ ação}, o código desenvolvido é conciso e de fácil leitura.
+O uso de uma linguagem \textbf{DSL} de \textit{scripting} como o \texttt{AWK} permite o rápido desenvolvimento de um processador de dados semi-estruturados nomeadamente um dicionário Thesaurus. Este tipo de processador necessitaria de código de complexidade superior e de tamanho considerável caso fosse desenvolvido em linguagens declarativas como C ou Java em que é necessário ter em conta a gestão da memória bem como outras trivialidades que são de pouca relevância para o processador em si. Em \texttt{AWK}, dada a sua estrutura \textbf{padrão $\to$ ação}, o código desenvolvido é conciso e de fácil leitura.
 
 \end{document}
