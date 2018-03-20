@@ -17,7 +17,7 @@ function printDominios(){
 }
 
 function printRelations(){
-    print "======Relations====="
+    print "======Relações====="
     for(x in ind[1])
         print x
 }

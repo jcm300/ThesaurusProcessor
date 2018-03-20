@@ -3,6 +3,8 @@
 \usepackage{fancyvrb} 
 \usepackage[portuguese]{babel}
 \usepackage{ragged2e}
+\usepackage{graphicx}
+\usepackage{float}
 
 \begin{document} \mainmatter
 \title{Processador de Thesaurus}
@@ -83,6 +85,12 @@ Dado a simplicidade do processador desenvolvido, um exemplo de uso consiste em i
     gawk -f exe1.awk *.mdic
 \end{Verbatim}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=7cm]{Exe1Out.png}
+    \caption{Output de \texttt{gawk -f exe1.awk *.mdic}}
+\end{figure}
+
 \section{Exe 2}
 O objetivo deste exercício é mostrar os triplos expandidos (um por cada linha) correspondentes às relações entre os termos. Como tal, é necessário percorrer os ficheiros por completo. Mais uma vez o carácter usado como \texttt{Field Separator} foi ':'. Consoante o início da linha, a ação levada a cabo é indicada de seguida:
 \begin{itemize}
@@ -112,6 +120,12 @@ Pode ser também interessante guardar o resultado num ficheiro:
 \begin{verbatim}
 gawk -f exe2.awk *.mdic >> file.txt
 \end{verbatim}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=7cm]{Exe2Out.png}
+    \caption{Sample output de \texttt{gawk -f exe2.awk profissoes-lojas.mdic}}
+\end{figure}
 
 \subsection{Exe 3}
 O último exercício compreende a criação de ficheiros \texttt{HTML} com hiperligações entre si com base nos termos e nas suas relações \textbf{i.e.} nos triplos construídos no exemplo anterior. Para obter este resultado basta recorrer ao código desenvolvido no exercício anterior e, quando o fim do ficheiro for encontrado, criar as hiperligações referidas. 
@@ -151,6 +165,12 @@ Como anteriormente referido foi usado o \textit{output} do exercicio anterior e,
     gawk -f exe3.awk file.txt
     \end{verbatim}
 \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=3cm]{Exe3Out.png}
+    \caption{Ficheiro "Alcácer do Sal.html"  resultante de \texttt{gawk -f exe2.awk riospt.mdic >> file.txt \&\& cat file.txt $|$ gawk -f exe3.awk}}
+\end{figure}
 
 \section{Conclusão}
 O uso de uma linguagem \textbf{DSL} de \textit{scripting} como o \texttt{AWK} permite o rápido desenvolvimento de um processador de dados semi-estruturados nomeadamente um dicionário Thesaurus. Este tipo de processador necessitaria de código de complexidade superior e de tamanho considerável caso fosse desenvolvido em linguagens declarativas como C ou Java em que é necessário ter em conta a gestão da memória bem como outras trivialidades que são de pouca relevância para o processador em si. Em \texttt{AWK}, dada a sua estrutura \textbf{padrão $\to$ ação}, o código desenvolvido é conciso e de fácil leitura.
