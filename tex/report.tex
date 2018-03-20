@@ -21,7 +21,7 @@ e-mail: \{a78821,a77049\}@alunos.uminho.pt
 \justify
 
 \begin{abstract}
-Este documento serve de apoio ao desenvolvimento de um Processador Thesaurus explicando todas as decisões tomadas de modo a obter o mesmo. Inicialmente será explicada a estrutura dos ficheiros de entrada (extensão .mdic) bem como mostradas as decisões tomadas de modo a obter o produto final. Por fim, serão apresentados exemplos de utilização do mesmo.
+Este documento serve de apoio ao desenvolvimento de um Processador Thesaurus explicando todas as decisões tomadas de modo a obter o mesmo. Inicialmente será explicitada a estrutura dos ficheiros de entrada (extensão .mdic) e identficadas as decisões tomadas de modo a obter a versão atual do processador. Em cada uma das fases do desenvolvimento serão apresentados exemplos de utilização do processador.
 \end{abstract}
 
 \section{Introdução}
@@ -45,14 +45,14 @@ A estrutura de um dicionário pode ser dividido em três componentes principais:
             \item a relação entre o termo da coluna 1 e da coluna N é dado pela relação N da linha inicial
             \item na presença de vários termos com a mesma relação, podem ser agrupados por '$|$'
             \item quando uma relação na linha inicial possui $<$classe, ou seja 'relação$<$classe', significa que o elementos dessa coluna são instâncias da 'classe'
-            \item quando '\%THE$<$classe' significa que o termo 1 é instância da 'classe'
+            \item quando '\%THE$<$classe' significa que o termo1 é instância da 'classe'
         \end{itemize}
 \end{itemize}
 Com esta estrutura em mente explicita-se, de seguida, o desenvolvimento do processado de Thesaurus.
 
 \section{Desenvolvimento}
 \subsection{Exe 1}
-O processamento iniciou-se pela identificação dos domínios e relações presentes no dicionário. Para tal, e tendo em conta a estrutura dos documentos, foi usado como \texttt{Field Separator} o caracter ':'.
+O processamento iniciou-se pela identificação dos domínios e relações presentes no dicionário. Para tal, e tendo em conta a estrutura dos documentos, foi usado como \texttt{Field Separator} o carácter ':'.
 Tendo em conta a sintaxe de Padrão $\to$ Ação inerente ao \texttt{AWK} foram considerados relevantes os seguintes padrões:
 \begin{enumerate}
     \item \verb|/^%dom/|: padrão que identifica novo domínio no início de uma linha
@@ -84,7 +84,7 @@ Dado a simplicidade do processador desenvolvido, um exemplo de uso consiste em i
 \end{Verbatim}
 
 \section{Exe 2}
-O objetivo deste exercício é mostrar os triplos expandidos(um por cada linha) correspondentes. Como tal, há a necessidade de percorrer os ficheiros por completo. Consideramos como Field Separator ':'. Consoante o início da linha, o processamento é indicado de seguida:
+O objetivo deste exercício é mostrar os triplos expandidos (um por cada linha) correspondentes às relações entre os termos. Como tal, é necessário percorrer os ficheiros por completo. Mais uma vez o carácter usado como \texttt{Field Separator} foi ':'. Consoante o início da linha, a ação levada a cabo é indicada de seguida:
 \begin{itemize}
     \item \verb|/^%dom/|: guarda-se o dominio indicado numa variável até aparecer uma nova linha com o mesmo padrão altura em que o dominio é atualizado
     \item \verb|/^%inv/|: guarda num índice \texttt{inv} a relação e a sua respetiva inversa
@@ -101,14 +101,14 @@ O objetivo deste exercício é mostrar os triplos expandidos(um por cada linha) 
                 \end{itemize}
         \end{itemize}
 \end{itemize}
-Após a adição de todos os triplos no indice triples, ou seja após percorridos todos os ficheiros(END) é percorrido esse mesmo indice imprimindo cada um. Este indice possui como elemento diferenciador o triplo e como conteúdo se ocorreu, de modo a retirar triplos repetidos. É também bom referir que todos os elementos, seja classes, relações ou termos é lhes retirado espaços que estejam a mais antes e após o mesmo.
+Após o armazenamento de todos os triplos no índice \texttt{triples}, ou seja após percorridos todos os ficheiros(\textbf{END}) é percorrido esse mesmo índice imprimindo cada triplo. Este índice usa o triplo como método de indexação e, em cada posição, guarda um inteiro que indica a ocorrência(1)  ou não(0) do triplo, permitindo assim impedir a duplicação de informação. É importante referir que todos os elementos, sejam classes, relações ou termos, são tratados de modo a lhes serem retirado espaços que estejam antes e após os mesmos.
 
 \subsubsection{Usage}
 O exemplo mais comum de utilização deste programa é:
 \begin{verbatim}
 gawk -f exe2.awk *.mdic
 \end{verbatim}
-Contudo pode ser também interessante guardar o resultado num ficheiro:
+Pode ser também interessante guardar o resultado num ficheiro:
 \begin{verbatim}
 gawk -f exe2.awk *.mdic >> file.txt
 \end{verbatim}
