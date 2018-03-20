@@ -28,8 +28,8 @@ Este documento serve de apoio ao desenvolvimento de um Processador Thesaurus exp
 O presente projeto (Processador de Thesaurus) visa ser um sistema de processamento de dicionários Thesaurus que recorre a expressões regulares (ERs) para filtrar e transformar os mesmos, extraindo e tratando a informação mais relevante de forma eficiente. Para atingir este objetivo é usada a linguagem de filtragem e tratamento de dados \texttt{AWK} visto ser uma \textbf{DSL}(Domain Specific Language) com foco em dados semi-estruturados.
 
 \section{Preliminares}
-De modo a compreender melhor o desenvolvimento deste projeto é importante saber e compreender a estrutura dos dicionários (ficheiros .mdic). 
-A estrutura de um dicionário pode ser dividido em três conceitos:
+De modo a compreender melhor o desenvolvimento deste projeto é importante compreender a estrutura dos dicionários Thesaurus(ficheiros .mdic). 
+A estrutura de um dicionário pode ser dividido em três componentes principais:
 \begin{itemize}
     \item linhas começadas por '\#': comentários a ignorar
     \item diretivas gerais:
@@ -48,7 +48,7 @@ A estrutura de um dicionário pode ser dividido em três conceitos:
             \item quando '\%THE$<$classe' significa que o termo 1 é instância da 'classe'
         \end{itemize}
 \end{itemize}
-Pode-se finalmente, passar ao desenvolvimento do processador Thesaurus.
+Com esta estrutura em mente explicita-se, de seguida, o desenvolvimento do processado de Thesaurus.
 
 \section{Desenvolvimento}
 \subsection{Exe 1}
@@ -57,22 +57,22 @@ Tendo em conta a sintaxe de Padrão $\to$ Ação inerente ao \texttt{AWK} foram 
 \begin{enumerate}
     \item \verb|/^%dom/|: padrão que identifica novo domínio no início de uma linha
     \item \verb|/^%THE/|: padrão que identifica início de tabela de relações indicadas na presente linha
+    \item \verb|/^%inv/|: padrão que identifica uma relação inversa à indicada no segundo campo
 \end{enumerate}
 No caso do padrão \verb|/^%dom/| a ação compreende a remoção de espaços que precedam o domínio e o armazenamento do mesmo numa matriz \texttt{ind}.
 \begin{Verbatim}
     /^%dom/     {sub(/^ /,"",$2); ind[0][$2]++}
 \end{Verbatim}
-Quando é encontrado o padrão \verb|/^%THE/| são percorridos todos os campos (\textbf{i.e.}relações) e quando uma dada relação não vazia (\verb|$j!=" " && $j!=""|) é encontrada são-lhe removidos os espaços precedentes e subsequentes removendo também, eventualmente, a indicação de classe. De seguinta estes são também armazenados na matriz \texttt{ind}.
+Quando o padrão encontrado é do tipo \verb|/^%THE/| ou \verb|/^%inv/| são percorridos todos os campos (\textbf{i.e.}relações) e quando uma dada relação não vazia (\verb|$j!=" " && $j!=""|) é encontrada são-lhe removidos os espaços precedentes e subsequentes removendo também, eventualmente, a indicação de classe. De seguinta estes são também armazenados na matriz \texttt{ind}.
 \begin{Verbatim}
-/^%THE/     {for(j=2;j<=NF;j++){
-                if($j != " " && $j!=""){
-                    sub(/^ /,"",$j);           
-                    sub(/(\s)|(<(.*)?)/,"",$j);
-                    !ind[1][$j]++;
-                }                              
-             }
-            }
-
+/^%(THE|inv)/   {for(j=2;j<=NF;j++){
+                    if($j != " " && $j!=""){
+                        sub(/^(\s)*/,"",$j);
+                        sub(/(\s)|(<(.*)?)/,"",$j);
+                        !ind[1][$j]++;
+                    }
+                }
+                }
 \end{Verbatim}
 
 Por fim, quando o final de ficheiro é encontrado (\texttt{EOF}) são impressos os domínios e as relações recorrendo, para isso, às funções \texttt{printDominios} e \texttt{printRelations} respetivamente.

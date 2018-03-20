@@ -1,13 +1,13 @@
 BEGIN       {IGNORECASE=1; FS=":"}
 /^%dom/     {sub(/^ /,"",$2); ind[0][$2]++}
-/^%THE/     {for(j=2;j<=NF;j++){
-                if($j != " " && $j!=""){
-                    sub(/^ /,"",$j);                #remove spaces
-                    sub(/(\s)|(<(.*)?)/,"",$j);      #remove after a less than is found
-                    !ind[1][$j]++;
+/^%(THE|inv)/   {for(j=2;j<=NF;j++){
+                    if($j != " " && $j!=""){
+                        sub(/^(\s)*/,"",$j);                #remove spaces
+                        sub(/(\s)|(<(.*)?)/,"",$j);     #remove after a less than is found
+                        !ind[1][$j]++;
+                    }
                 }
-             }
-            }
+                }
 END {printDominios(); printRelations()}
 
 function printDominios(){
