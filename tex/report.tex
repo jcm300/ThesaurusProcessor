@@ -63,7 +63,7 @@ No caso do padrão \verb|/^%dom/| a ação compreende a remoção de espaços qu
 \begin{Verbatim}
     /^%dom/     {sub(/^ /,"",$2); ind[0][$2]++}
 \end{Verbatim}
-Quando o padrão encontrado é do tipo \verb|/^%THE/| ou \verb|/^%inv/| são percorridos todos os campos (\textbf{i.e.}relações) e quando uma dada relação não vazia (\verb|$j!=" " && $j!=""|) é encontrada são-lhe removidos os espaços precedentes e subsequentes removendo também, eventualmente, a indicação de classe. De seguinta estes são também armazenados na matriz \texttt{ind}.
+Quando o padrão encontrado é do tipo \verb|/^%THE/| ou \verb|/^%inv/| são percorridos todos os campos (\textbf{i.e.}relações) e quando uma dada relação não vazia (\verb|$j!=" " && $j!=""|) é encontrada são-lhe removidos os espaços precedentes e subsequentes removendo também, eventualmente, a indicação de classe. De seguida, estes são também armazenados na matriz \texttt{ind}.
 \begin{Verbatim}
 /^%(THE|inv)/   {for(j=2;j<=NF;j++){
                     if($j != " " && $j!=""){
