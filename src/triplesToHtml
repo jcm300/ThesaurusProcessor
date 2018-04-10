@@ -1,0 +1,41 @@
+#!/usr/bin/gawk -f
+BEGIN           {IGNORECASE=1}
+{
+    sub(/^\(/,"",$0);
+    sub(/\)$/,"",$0);
+    split($0,triple,",");
+    sub(/^\s/,"",triple[1]);
+    sub(/\s$/,"",triple[1]);
+    sub(/^\s/,"",triple[3]);
+    sub(/\s$/,"",triple[3]);
+    triples[i]=triple[1] "," triple[2] " " triple[3];
+    i++;
+    !ind[triple[1]]++;
+}
+END {
+    print "<meta charset=\"utf-8\">" > "dom.html";
+    print "<ul>" > "dom.html";
+    print "<H1> Domínios </H1>" > "dom.html"; 
+    for(x in triples){
+        split(triples[x],aux,",");
+        if(create[aux[1]]==""){
+            print "<meta charset=\"utf-8\">" > aux[1] ".html";
+            print "<ul>" > aux[1] ".html";
+            print "<H1>" aux[1] "</H1>" > aux[1] ".html"; 
+            !create[aux[1]]++;
+        }
+        split(aux[2],terms," ");
+        if(ind[terms[2]]!=""){
+            if(terms[1]=="dom" && indDomCreate[aux[1]]==0){
+                print "<li><a href=\"" aux[1] ".html\">" aux[1] "</a></li>" > "dom.html";
+                !indDomCreate[aux[1]]++;
+            }
+            print "<li><a href=\"" terms[2] ".html\">" aux[2] "</a></li>" > aux[1] ".html";
+        }
+        else print "<li>" aux[2] "</li>" > aux[1] ".html";
+    }
+        
+    for(y in create){
+        print "</ul>" > y ".html";        
+    }
+}

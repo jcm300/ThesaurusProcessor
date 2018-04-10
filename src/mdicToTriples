@@ -1,3 +1,4 @@
+#!/usr/bin/gawk -f
 BEGIN                               {IGNORECASE=1; FS=":"}
 /^%THE/                             {
                                         for(j=1;j<=NF;j++){
